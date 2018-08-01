@@ -1,0 +1,1 @@
+{"version":3,"file":"changeimage-editing.js","sourceRoot":"","sources":["../../src/changeimage/changeimage-editing.ts"],"names":[],"mappings":"AAAA,OAAO,MAAM,MAAM,qCAAqC,CAAC;AACzD,OAAO,kBAAkB,MAAM,uBAAuB,CAAC;AAEvD,MAAM,OAAO,kBAAmB,SAAQ,MAAM;IAC5C,IAAI;QACF,IAAI,CAAC,MAAM,CAAC,QAAQ,CAAC,GAAG,CAAC,aAAa,EAAE,IAAI,kBAAkB,CAAC,IAAI,CAAC,MAAM,CAAC,CAAC,CAAC;IAC/E,CAAC;CACF"}

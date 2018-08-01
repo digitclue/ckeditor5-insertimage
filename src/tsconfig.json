@@ -1,0 +1,16 @@
+{
+
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./",
+    "outDir": "../build"
+  },
+  "files": [
+    "./insertimage.ts",
+    "./changeimage.ts",
+    "./declarations.d.ts"
+  ],
+  "include": [
+    "../types/**/*.d.ts"
+  ]
+}

@@ -1,59 +1,71 @@
-/**
- * @license Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md.
- */
-
-'use strict';
-
-/* eslint-env node */
-
 const path = require('path');
-const UglifyJsWebpackPlugin = require('uglifyjs-webpack-plugin');
+const { styles } = require('@ckeditor/ckeditor5-dev-utils');
+const CKEditorWebpackPlugin = require('@ckeditor/ckeditor5-dev-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-	devtool: 'source-map',
-	performance: { hints: false },
+  mode: 'development',
 
-	entry: path.resolve(__dirname, 'src', 'insertimage.ts'),
+  devtool: 'inline-source-map',
 
-	output: {
-		// The name under which the editor will be exported.
-		library: 'InsertImagePlugin',
+  entry: {
+    main: [
+      './sample/main.ts',
+    ]
+  },
 
-		path: path.resolve(__dirname, 'build'),
-		filename: 'insertimage.js',
-		libraryTarget: 'commonjs',
-		libraryExport: 'default'
-	},
+  output: {
+    path: path.resolve(__dirname, 'sample/dist'),
+    filename: 'scripts/[name].[hash].js',
+  },
 
-  externals: /^@ckeditor\/ckeditor5/,
+  plugins: [
+    new CKEditorWebpackPlugin({
+      language: 'en',
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'main.html',
+      template: 'sample/index.html',
+    }),
+  ],
 
-	optimization: {
-		minimizer: [
-			new UglifyJsWebpackPlugin({
-				sourceMap: true,
-				uglifyOptions: {
-					output: {
-						// Preserve CKEditor 5 license comments.
-						comments: /^!/
-					}
-				}
-			})
-		]
-	},
+  resolve: {
+    // Add `.ts` and `.tsx` as a resolvable extension.
+    extensions: ['.ts', '.tsx', '.js']
+  },
 
-	resolve: {
-		// Add `.ts` and `.tsx` as a resolvable extension.
-		extensions: ['.ts', '.tsx', '.js']
-	},
+  module: {
+    rules: [
+      { test: /\.tsx?$/, loader: 'ts-loader' },
+      {
+        test: /\.svg$/,
+        use: ['raw-loader']
+      },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'style-loader',
+            options: {
+              singleton: true
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: styles.getPostCssConfig({
+              themeImporter: {
+                themePath: require.resolve('@ckeditor/ckeditor5-theme-lark')
+              },
+              minify: true
+            })
+          },
+        ]
+      }
+    ]
+  },
 
-	module: {
-		rules: [
-			{ test: /\.tsx?$/, loader: 'ts-loader' },
-			{
-				test: /\.svg$/,
-				use: ['raw-loader']
-			},
-		]
-	}
+  devServer: {
+    contentBase: path.join(__dirname, 'sample/dist'),
+    index: 'main.html',
+  },
 };
